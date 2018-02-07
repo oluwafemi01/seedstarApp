@@ -1,0 +1,136 @@
+{% extends 'homesite/base.html' %}
+
+{% block title %}
+	{{title}}
+{% endblock %}
+
+
+{% block staticcss %}
+
+	<link href="/static/assets/css/ct-paper.css" rel="stylesheet"/>
+	<link href="/static/assets/css/examples.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="/static/css/landing-page.css" rel="stylesheet">
+    <style>
+        body{
+            
+             background:#000;
+        }
+        .form-container{
+            background:#FFF;
+            border-radius:5px;
+        }
+        .error{
+            
+            font-weight:bold;
+        }
+        .succes{
+            font-weight:bold;
+            color:green;
+        }
+        input[type=text],input[type=email]{
+            color:green;
+            border: 2px solid #000;
+        }
+    </style>
+    
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+{% endblock %}
+
+
+{% block nav %}
+	<nav class="navbar navbar-ct-transparent navbar-fixed-top" role="navigation-demo" id="register-navbar">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+              seedstars
+          </a>
+        </div>
+    
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navigation-example-2">
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="/add" class="btn btn-simple">Create record</a>
+            </li>
+            <li>
+                <a href="/list" class="btn btn-simple">View records</a>
+            </li>
+           </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-->
+    </nav> 
+{% endblock %}
+
+
+{% block content %}
+	<div class="container-fluid" style="margin-top:100px;">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4 form-container">
+                <div class="text-right"><br>
+                    <a href="/list" class="text-left btn btn-default">View records</a>
+                </div>
+                <form method="post" action="" id="form" role="form">
+                    {% csrf_token %}
+                    <br>
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger error msg">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger error msg">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% elif msg %}
+                        <p class='text-center msg succes'>created successfully</p>    
+                    {% endif %}
+
+                    <h4 class="text-center">Add New People</h4>
+                    <p><label for="firstname">First Name :</label></p>
+                    <input type="text" class="form-control" id="firstname" name="firstname" required><br>
+                    <p><label for="lastname">Last Name :</label></p>
+                    <input type="text" class="form-control" id="lastname" value="" name="lastname" required><br>
+                    <p><label for="email">Email :</label></p>
+                    <input type="email" class="form-control" id="email" name="email" required><br>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <button type="submit" class="btn btn-lg btn-default"> ADD</button><br><br>
+                        </div>
+                        
+                    </div>   
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block staticjs %}
+    
+        <script>
+            function closeBox(){
+                $(".msg").slideUp(1500)
+            }
+            setTimeout(closeBox,6000)
+        </script>
+    
+{% endblock%}
